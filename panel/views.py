@@ -115,8 +115,7 @@ def add_book(request):
             isbn_number=isbn_number,
             title=title,
             author=author,
-            copies=copies,
-            available_copies=copies
+            copies=copies
             )
         book.save()
         return redirect('books')
