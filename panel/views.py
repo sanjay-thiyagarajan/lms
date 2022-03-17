@@ -83,10 +83,20 @@ def students(request):
             b.fine_amount = fine
             b.save()
     students = list(Student.objects.all())
+    stud_db = []
+    for s in students:
+        students_db = {}
+        temp = list(Borrow.objects.filter(borrower=s).values_list('fine_amount', flat=True))
+        students_db['fullname'] = s.fullname
+        students_db['roll_number'] = s.roll_number
+        students_db['academic_year'] = s.academic_year
+        students_db['email'] = s.email
+        students_db['fine'] = sum(temp)
+        stud_db.append(students_db)
     if request.method == 'POST':
         key = request.POST.get('sort_by')
         qSort(students, key.lower())
-    return render(request, 'panel/students.html', {'students': students})
+    return render(request, 'panel/students.html', {'students': stud_db})
 
 #Borrow listing
 @login_required(login_url='login')
