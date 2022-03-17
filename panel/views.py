@@ -4,7 +4,25 @@ from .models import Student, Book, Borrow
 from django.utils import timezone
 from datetime import datetime
 from panel.qSort import qSort
+from panel.decorators import unAuthenticated_user
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
+from django.contrib.admin.models import LogEntry
 
+@unAuthenticated_user
+def loginApp(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect(home)
+        else:
+            return render(request, 'panel/login.html', {'message': 'Invalid credentials'})
+    return render(request, 'panel/login.html')
+
+@login_required(login_url='login')
 def home(request):
     book_count = Book.objects.count
     borrow_count = Borrow.objects.count
@@ -46,6 +64,7 @@ def home(request):
     return render(request, 'panel/index.html', data)
 
 #Books listing
+@login_required(login_url='login')
 def books(request):
     books = list(Book.objects.all())
     if request.method == 'POST':
@@ -54,6 +73,7 @@ def books(request):
     return render(request, 'panel/books.html', {'books': books})
 
 #Students listing
+@login_required(login_url='login')
 def students(request):
     borrows = list(Borrow.objects.all())
     for b in borrows:
@@ -69,6 +89,7 @@ def students(request):
     return render(request, 'panel/students.html', {'students': students})
 
 #Borrow listing
+@login_required(login_url='login')
 def borrows(request):
     borrows = list(Borrow.objects.all())
     if request.method == 'POST':
@@ -83,6 +104,7 @@ def borrows(request):
     return render(request, 'panel/borrows.html', {'borrows': borrows})
 
 # Add Books
+@login_required(login_url='login')
 def add_book(request):
     if request.method == 'POST':
         title = request.POST.get('title')
@@ -101,6 +123,7 @@ def add_book(request):
     return render(request, 'panel/add-book.html')
 
 # Add Students
+@login_required(login_url='login')
 def add_student(request):
     if request.method == 'POST':
         fullname = request.POST.get('fullname')
@@ -117,6 +140,7 @@ def add_student(request):
         return redirect('students')
     return render(request, 'panel/add-student.html')
 
+@login_required(login_url='login')
 def add_borrow(request):
     students = Student.objects.all()
     books = Book.objects.all()
@@ -141,6 +165,7 @@ def add_borrow(request):
     return render(request, 'panel/add-borrow.html', data )
 
 #Returning books
+@login_required(login_url='login')
 def return_book(request, borrow_id):
     brw = Borrow.objects.get(id = borrow_id)
     if brw.due_date < timezone.now().date():
@@ -152,12 +177,23 @@ def return_book(request, borrow_id):
         return redirect('borrows')
     return render(request, 'panel/return-book.html', {'borrow': brw, 'color': color})
 
+@login_required(login_url='login')
+def activity_log(request):
+    logs = list(LogEntry.objects.all())
+    return render(request, 'panel/activity-log.html', {'logs':logs})
+
 #Deleting books
+@login_required(login_url='login')
 def book_del_handler(request, book_id):
     Book.objects.get(id=book_id).delete()
     return redirect('books')
 
 #Deleting students
+@login_required(login_url='login')
 def student_del_handler(request, student_id):
     Student.objects.get(id=student_id).delete()
     return redirect('students')
+
+def logoutApp(request):
+    logout(request)
+    return redirect(loginApp)

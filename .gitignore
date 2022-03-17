@@ -1,3 +1,5 @@
 vir
 __pycache__
 migrations
+.env
+*.sqlite3
