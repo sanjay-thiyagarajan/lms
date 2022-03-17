@@ -92,6 +92,7 @@ def students(request):
         students_db['academic_year'] = s.academic_year
         students_db['email'] = s.email
         students_db['fine'] = sum(temp)
+        students_db['id'] = s.id
         stud_db.append(students_db)
     if request.method == 'POST':
         key = request.POST.get('sort_by')
