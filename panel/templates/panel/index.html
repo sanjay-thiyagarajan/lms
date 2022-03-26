@@ -66,64 +66,35 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div style="width: 50%;">
-                            <div class="card shadow border-start-warning py-2">
-                                <h3 style="padding-left:20px;padding-top:20px;font-weight:bold;color:red;margin-bottom:20px;">Pending (Top Priority)</h3>
-                                {% if borrows %}
-                                    <table class="table table-striped table-bordered" id="dataTable">
-                                        <thead>
-                                            <tr>
-                                                <th>Borrower</th>
-                                                <th>Book</th>
-                                                <th>Borrowed on</th>
-                                                <th>Due Date</th>
-                                                <th>Fine amount</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for borrow in borrows %}
-                                                <tr>
-                                                    <td>{{borrow.borrower}}</td>
-                                                    <td>{{borrow.book.title}}</td>
-                                                    <td>{{borrow.borrowed_on}}</td>
-                                                    <td>{{borrow.due_date}}</td>
-                                                    <td>{{borrow.fine_amount}}</td>
-                                                    <td><a href="/return-book/{{borrow.id}}/"><button type="button" style="background-color: red; color: white; padding: 2px; border-color: red; border-radius: 5px;">Return</button></a>
-                                                </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                {% else %}
-                                    <p class="successbox">Great! No pending returns currently</p>
-                                {% endif %}
-                            </div>
-                        </div>
-                        <div style="width: 50%;">
-                            <div class="card shadow border-start-warning py-2">
-                                <h3 style="padding-left:20px;padding-top:20px;font-weight:bold;color:green;margin-bottom:20px;">Recent Bookings</h3>
-                                {% if demand_books %}
-                                <table class="table table-striped table-bordered" id="dataTable" style="width:100%">
+                        <div class="card shadow border-start-warning py-2">
+                            <h3 style="padding-left:20px;padding-top:20px;font-weight:bold;color:red;margin-bottom:20px;">Pending (Top Priority)</h3>
+                            {% if borrows %}
+                                <table class="table table-striped table-bordered" id="dataTable">
                                     <thead>
                                         <tr>
-                                            <th>Title</th>
-                                            <th>Author</th>
-                                            <th>ISBN number</th>
+                                            <th>Borrower</th>
+                                            <th>Book</th>
+                                            <th>Borrowed on</th>
+                                            <th>Due Date</th>
+                                            <th>Fine amount</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% for book in demand_books %}
-                                            <tr style="padding: 5px;">
-                                                <td>{{book.title}}</td>
-                                                <td>{{book.author}}</td>
-                                                <td>{{book.isbn_number}}</td>
+                                        {% for borrow in borrows %}
+                                            <tr>
+                                                <td>{{borrow.borrower}}</td>
+                                                <td>{{borrow.book.title}}</td>
+                                                <td>{{borrow.borrowed_on}}</td>
+                                                <td>{{borrow.due_date}}</td>
+                                                <td>{{borrow.fine_amount}}</td>
+                                                <td><a href="/return-book/{{borrow.id}}/"><button type="button" style="background-color: red; color: white; padding: 2px; border-color: red; border-radius: 5px;">Return</button></a>
                                             </tr>
                                         {% endfor %}
                                     </tbody>
                                 </table>
-                                {% else %}
-                                    <p class="successbox">No bookings available currently</p>
-                                {% endif %}
-                            </div>
+                            {% else %}
+                                <p class="successbox">Great! No pending returns currently</p>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

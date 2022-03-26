@@ -42,7 +42,7 @@ def home(request):
     book_count = Book.objects.count
     borrow_count = Borrow.objects.count
     pending_returns = 0
-    borrows = list(Borrow.objects.all())
+    borrows = list(Borrow.objects.filter(borrower = stud))
     # Total fine calculation
     borrow_fine = list(Borrow.objects.filter(borrower = stud).values_list('fine_amount', flat=True))
     total_fine = sum(borrow_fine)
@@ -55,12 +55,7 @@ def home(request):
     borrows = borrows[-5:]
 
     #Books in demand
-    books = list(Book.objects.all())
-    demand_books = []
-    for b in books:
-        bk = list(Borrow.objects.filter(book=b).values_list('book', flat=True))
-        if len(bk) == b.copies:
-            demand_books.append(b)
+    demand_books = list(Borrow.objects.filter(borrower = stud).values_list('book', flat=True))
     data = {'book_count': book_count, 'borrow_count': borrow_count, 'total_fine': total_fine, 'pending_returns':pending_returns, 'fullname':stud.fullname}
     if pending_returns != 0:
         data['borrows'] = borrows
