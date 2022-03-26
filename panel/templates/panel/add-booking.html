@@ -25,9 +25,7 @@
                         <h2 class="visually-hidden">Booking Form</h2>
                         <div class="illustration"><i class="fa fa-book" style="color: var(--bs-red);"></i></div>
                         <select class="form-control" name="borrower" placeholder="Borrower" style="padding: 5px;margin-top: 10px;">
-                        {% for student in students %}
-                            <option>{{student.fullname}}</option>
-                        {% endfor %}
+                            <option>{{fullname}}</option>
                         </select>
                         <select class="form-control" name="book" placeholder="Book" style="padding: 5px;margin-top: 10px;">
                         <option>{{book.title}}</option>

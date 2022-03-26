@@ -40,7 +40,7 @@ def home(request):
     updateFine()
     stud = Student.objects.get(user = User.objects.get(id = request.user.id))
     book_count = Book.objects.count
-    borrow_count = Borrow.objects.count
+    borrow_count = Borrow.objects.filter(borrower=stud).count
     pending_returns = 0
     borrows = list(Borrow.objects.filter(borrower = stud))
     # Total fine calculation
@@ -145,9 +145,8 @@ def add_student(request):
 @login_required(login_url='login')
 def add_booking(request, book_id):
     stud = Student.objects.get(user = User.objects.get(id = request.user.id))
-    students = Student.objects.all()
     book = Book.objects.get(id = book_id)
-    data = {'students': students, 'book': book, 'fullname': stud.fullname}
+    data = {'fullname': stud.fullname, 'book': book, 'fullname': stud.fullname}
     if request.method == 'POST':
         borrower = request.POST.get('borrower')
         due_date = request.POST.get('due_date')
