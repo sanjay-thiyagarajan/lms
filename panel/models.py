@@ -1,6 +1,10 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 class Student(models.Model):
+    user = models.ForeignKey(User, on_delete= models.CASCADE, null=True)
     fullname = models.CharField(max_length=200, null=True)
     roll_number = models.CharField(max_length=20, null=True)
     email = models.EmailField(null=True)
@@ -34,3 +38,16 @@ class Borrow(models.Model):
 
     def __str__(self):
         return str(self.borrower)+"-"+str(self.book)
+
+@receiver(post_save, sender=Student)
+def createUser(sender, instance, **kwargs):
+    if instance.user == None:
+        fullname = instance.fullname.split(' ')
+        firstname, lastname = fullname[0], ''.join(fullname[1:])
+        user = User.objects.create_user(''.join(fullname[:10]).lower(), instance.email, 'Pass@2019')
+        user.first_name = firstname
+        user.last_name = lastname
+        user.save()
+        stud = Student.objects.get(id = instance.id)
+        stud.user = user
+        stud.save()

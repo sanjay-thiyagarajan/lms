@@ -8,8 +8,8 @@
                 <ul class="navbar-nav text-light" id="accordionSidebar">
                     <li class="nav-item"><a class="nav-link" href="{% url 'home' %}"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
                     <li class="nav-item"><a class="nav-link active" href="{% url 'books' %}"><i class="fa fa-book"></i><span>Books</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'borrows' %}"><i class="fa fa-dollar"></i><span>Borrowals</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'students' %}"><i class="fa fa-book"></i><span>Students</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'bookings' %}"><i class="fa fa-dollar"></i><span>Bookings</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'student_profile' %}"><i class="fa fa-book"></i><span>Profile</span></a></li>
                 </ul>
 {% endblock %}
 
@@ -21,7 +21,6 @@
                         <div class="card-header py-3">
                             <p class="text-primary m-0 fw-bold">Books Info</p>
                         </div>
-                        <a href="{% url 'add-book' %}"><button type="button" style="background-color: green; color: white; padding: 5px; border-color: green; border-radius: 5px; margin: 20px;">+ Add Book</button></a>
                         <div class="card-body">
                             <div style="border-style: solid; padding: 15px; border-radius: 6px;">
                                 <p style="padding: 5px;">Sort by</p>
@@ -52,7 +51,7 @@
                                             <td>{{book.author}}</td>
                                             <td>{{book.isbn_number}}</td>
                                             <td>{{book.copies}}</td>
-                                            <td><a href="/delete-book/{{book.id}}/"><button type="button" style="background-color: red; color: white; padding: 2px; border-color: red; border-radius: 5px;">Remove</button></a>
+                                            <td><a href="/add-booking/{{book.id}}/"><button type="button" style="background-color: green; color: white; padding: 2px; border-color: green; border-radius: 5px;">Get Book</button></a>
                                         </tr>
                                     {% endfor %}
                                 </tbody>
