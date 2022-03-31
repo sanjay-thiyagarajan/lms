@@ -2,7 +2,7 @@ import re
 from django.forms import ValidationError
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import Student, Book, Borrow
+from .models import Student, Book, Borrow, Transaction
 from django.utils import timezone
 from datetime import datetime
 from panel.qSort import qSort
@@ -173,8 +173,20 @@ def return_book(request, borrow_id):
     else:
         color = 'green'
     if request.method == 'POST':
-        brw.delete()
-        return redirect('bookings')
+        stud = Student.objects.get(user = User.objects.get(id = request.user.id))
+        if stud.balance >= brw.fine_amount:
+            stud.balance = stud.balance - brw.fine_amount
+            stud.save()
+            tr = Transaction.objects.create(
+                payer = stud,
+                book = brw.book,
+                amount = brw.fine_amount
+            )
+            tr.save()
+            brw.delete()
+            return redirect('bookings')
+        else:
+            return render(request, 'panel/return-book.html', {'borrow': brw, 'color': color, 'error': 'Insufficient funds'})
     return render(request, 'panel/return-book.html', {'borrow': brw, 'color': color})
 
 @login_required(login_url='login')
@@ -202,6 +214,11 @@ def student_profile(request):
             stud.email = email
         else:
             data['error'] = 'Empty field (email) not permitted'
+        if password == '':
+            data['error'] = 'Empty field (password) not permitted'
+        if conf_pass == '':
+            data['error'] = 'Empty field (confirm password) not permitted'
+
         if 'error' in  data.keys():
             return render(request, 'panel/student-profile.html', data)
         stud.save()
@@ -263,9 +280,20 @@ def register_student(request):
     return render(request, 'panel/register-student.html', data)
 
 @login_required(login_url='login')
-def activity_log(request):
-    logs = list(LogEntry.objects.all())
-    return render(request, 'panel/activity-log.html', {'logs':logs})
+def view_profile(request):
+    stud = Student.objects.get(user = User.objects.get(id = request.user.id))
+    borrow_fine = list(Borrow.objects.filter(borrower = stud).values_list('fine_amount', flat=True))
+    total_fine = sum(borrow_fine)
+    return render(request, 'panel/view-profile.html', {'student' :stud, 'fullname': stud.fullname, 'total_fine': total_fine})
+
+@login_required(login_url='login')
+def wallet_view(request):
+    stud = Student.objects.get(user = User.objects.get(id = request.user.id))
+    borrow_fine = list(Borrow.objects.filter(borrower = stud).values_list('fine_amount', flat=True))
+    total_fine = sum(borrow_fine)
+    transactions = Transaction.objects.filter(payer = stud)
+    return render(request, 'panel/wallet-view.html', {'student' :stud, 'fullname': stud.fullname, 'total_fine': total_fine, 'transactions': transactions})
+
 
 #Deleting books
 @login_required(login_url='login')

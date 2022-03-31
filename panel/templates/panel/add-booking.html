@@ -1,7 +1,7 @@
 {% extends 'panel/template.html' %}
 {% load static %}
 {% block head %}
-<title>Add Borrow</title>
+<title>Make Booking</title>
 <link rel="stylesheet" href="{% static 'css/Login-Form-Clean.css' %}">
 {% endblock %}
 
@@ -10,14 +10,15 @@
                     <li class="nav-item"><a class="nav-link" href="{% url 'home' %}"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'books' %}"><i class="fa fa-book"></i><span>Books</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'bookings' %}"><i class="fa fa-dollar"></i><span>Bookings</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'student_profile' %}"><i class="fa fa-book"></i><span>Profile</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'view_profile' %}"><i class="fa fa-book"></i><span>Profile</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'wallet_view' %}"><i class="fa fa-book"></i><span>Wallet</span></a></li>
                 </ul>
 {% endblock %}
 
 
 {% block content %}
                 <div class="container-fluid">
-                    <h3 class="text-dark mb-1" style="font-weight: bold;color: var(--bs-gray);margin-top: 20PX;">LEND BOOK</h3>
+                    <h3 class="text-dark mb-1" style="font-weight: bold;color: var(--bs-gray);margin-top: 20PX;">MAKE BOOKING</h3>
                 </div><!-- Start: Login Form Clean -->
                 <section class="login-clean">
                     <form method="post" style="border-radius: 35px;border: 2px solid var(--bs-red);width: 450px;max-width: 450px;">
