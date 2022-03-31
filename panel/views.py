@@ -202,6 +202,7 @@ def student_profile(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
         conf_pass = request.POST.get('password_cnfrm')
+        academic_year = request.POST.get('academic_year')
         if fullname != '':
             stud.fullname = fullname
         else:
@@ -218,6 +219,10 @@ def student_profile(request):
             data['error'] = 'Empty field (password) not permitted'
         if conf_pass == '':
             data['error'] = 'Empty field (confirm password) not permitted'
+        if academic_year == '':
+            data['error'] = 'Empty field (academic year) not permitted'
+        else:
+            stud.academic_year = academic_year
 
         if 'error' in  data.keys():
             return render(request, 'panel/student-profile.html', data)
@@ -246,12 +251,15 @@ def register_student(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
         conf_pass = request.POST.get('password_cnfrm')
+        academic_year = request.POST.get('academic_year')
         if fullname == '':
             data['error'] = 'Empty field (fullname) not permitted'
         if rollnumber == '':
             data['error'] = 'Empty field (roll number) not permitted'
         if email == '':
             data['error'] = 'Empty field (email) not permitted'
+        if academic_year == '':
+            data['error'] = 'Empty field (academic year) not permitted'
         if 'error' in  data.keys():
             return render(request, 'panel/student-profile.html', data)
         # Set password
@@ -269,7 +277,8 @@ def register_student(request):
                         fullname = fullname,
                         roll_number = rollnumber,
                         email = email,
-                        user = user
+                        user = user,
+                        academic_year = academic_year
                     )
                     st.save()
                     return redirect('home')
