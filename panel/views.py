@@ -215,10 +215,7 @@ def student_profile(request):
             stud.email = email
         else:
             data['error'] = 'Empty field (email) not permitted'
-        if password == '':
-            data['error'] = 'Empty field (password) not permitted'
-        if conf_pass == '':
-            data['error'] = 'Empty field (confirm password) not permitted'
+
         if academic_year == '':
             data['error'] = 'Empty field (academic year) not permitted'
         else:
