@@ -196,6 +196,7 @@ def student_profile(request):
     data['fullname'] = stud.fullname
     data['email'] = stud.email
     data['roll_number'] = stud.roll_number
+    data['academic_year'] = stud.academic_year
     if request.method == 'POST':
         fullname = request.POST.get('fullname')
         rollnumber = request.POST.get('roll_number')
