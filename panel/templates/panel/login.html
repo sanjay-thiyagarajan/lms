@@ -13,8 +13,8 @@
             </div><br>
             <form class="user" method="post">
                 {% csrf_token %}
-                <div class="form-group" style="margin:10px;"><input class="form-control form-control-user" type="text" id="username" placeholder="Username" name="username"></div>
-                <div class="form-group" style="margin:10px;"><input class="form-control form-control-user" type="password" id="password" placeholder="Password" name="password"></div><br>
+                <div class="form-group" style="margin:10px;"><input required class="form-control form-control-user" type="text" id="username" placeholder="Username" name="username"></div>
+                <div class="form-group" style="margin:10px;"><input required class="form-control form-control-user" type="password" id="password" placeholder="Password" name="password"></div><br>
                 <center><button class="btn btn-primary btn-block text-white btn-user" style="width:100%;" type="submit">LOGIN</button></center>
                 <br>
                 {% if message %}
